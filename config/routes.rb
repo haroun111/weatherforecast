@@ -1,3 +1,4 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  get 'forecast_weather/:city', to: 'weather_forecasts#forecast_weather', as: :weather_forecast
+  get 'current_weather/:city', to: 'weather_forecasts#current_weather', as: :current_weather
 end

@@ -6,18 +6,22 @@ class WeatherService
   OPENWEATHERMAP_API_KEY = Rails.application.credentials.openweathermap[:api_key]
 
   class << self
-    def current_weather(city)
-      fetch_weather('weather', city)
+    def current_weather(city, latitude, longitude)
+      fetch_weather('weather', city, latitude, longitude)
     end
 
-    def weather_forecast(city)
-      fetch_weather('forecast', city)
+    def weather_forecast(city, latitude, longitude)
+      fetch_weather('forecast', city, latitude, longitude)
     end
 
     private
 
-    def fetch_weather(endpoint, city)
-      url = "#{OPENWEATHERMAP_API_URL}#{endpoint}?q=#{city}&appid=#{OPENWEATHERMAP_API_KEY}&units=metric"
+    def fetch_weather(endpoint, city, latitude, longitude)
+      if latitude.present? && longitude.present?
+        url = "#{OPENWEATHERMAP_API_URL}#{endpoint}?lat=#{latitude}&lon=#{longitude}&appid=#{OPENWEATHERMAP_API_KEY}&units=metric"
+      else
+        url = "#{OPENWEATHERMAP_API_URL}#{endpoint}?q=#{city}&appid=#{OPENWEATHERMAP_API_KEY}&units=metric"
+      end
       uri = URI(url)
       begin
         response = Net::HTTP.get(uri)
